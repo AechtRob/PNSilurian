@@ -1,8 +1,12 @@
 package net.pnsilurian.world.dimension.silurian;
 
-import net.lepidodendron.block.BlockGravelWavy;
-import net.lepidodendron.block.BlockSandWavy;
+import net.lepidodendron.block.*;
+import net.lepidodendron.util.EnumBiomeTypeOrdovician;
+import net.lepidodendron.util.EnumBiomeTypeSilurian;
 import net.lepidodendron.world.biome.ChunkGenSpawner;
+import net.lepidodendron.world.biome.ordovician.BiomeOrdovician;
+import net.lepidodendron.world.biome.silurian.BiomeSilurian;
+import net.lepidodendron.world.gen.WorldGenOrdovicianBogLakes;
 import net.lepidodendron.world.gen.WorldGenPrehistoricLakes;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSand;
@@ -10,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -18,6 +23,10 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.*;
+import net.pnsilurian.world.biome.silurian.BiomeSilurianCooksonia;
+import net.pnsilurian.world.biome.silurian.BiomeSilurianCoral;
+import net.pnsilurian.world.biome.silurian.BiomeSilurianReef;
+import net.pnsilurian.world.biome.silurian.BiomeSilurianSeaRocky;
 
 import java.util.List;
 import java.util.Random;
@@ -123,14 +132,28 @@ public class ChunkProviderSilurian implements IChunkGenerator {
         long l = this.random.nextLong() / 2 * 2 + 1;
         this.random.setSeed((long) x * k + (long) z * l ^ this.world.getSeed());
         net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.random, x, z, false);
-        if (this.random.nextInt(4) == 0)
-            if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.random, x, z, false,
-                    net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
-                int i1 = this.random.nextInt(16) + 8;
-                int j1 = this.random.nextInt(256);
-                int k1 = this.random.nextInt(16) + 8;
-                (new WorldGenPrehistoricLakes(FLUID.getBlock())).generate(this.world, this.random, blockpos.add(i1, j1, k1));
+
+        if (((BiomeSilurian) biome).getBiomeType() == EnumBiomeTypeSilurian.Cooksonia) {
+            for (int lake = 0; lake < 4; ++lake) {
+                if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.random, x, z, false,
+                        net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
+                    int i1 = this.random.nextInt(16) + 8;
+                    int j1 = this.random.nextInt(256);
+                    int k1 = this.random.nextInt(16) + 8;
+                    (new WorldGenOrdovicianBogLakes(Blocks.WATER)).generate(this.world, this.random, blockpos.add(i1, j1, k1));
+                }
             }
+        }
+        else {
+            if (this.random.nextInt(4) == 0)
+                if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.random, x, z, false,
+                        net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
+                    int i1 = this.random.nextInt(16) + 8;
+                    int j1 = this.random.nextInt(256);
+                    int k1 = this.random.nextInt(16) + 8;
+                    (new WorldGenPrehistoricLakes(FLUID.getBlock())).generate(this.world, this.random, blockpos.add(i1, j1, k1));
+                }
+        }
 
         net.minecraftforge.common.MinecraftForge.EVENT_BUS
                 .post(new net.minecraftforge.event.terraingen.DecorateBiomeEvent.Pre(this.world, this.random, blockpos));
@@ -297,6 +320,14 @@ public class ChunkProviderSilurian implements IChunkGenerator {
                     double d2 = this.limitRegMin[i] / (double) 512;
                     double d3 = this.limitRegMax[i] / (double) 512;
                     double d4 = (this.noiseRegMain[i] / 10.0D + 1.0D) / 2.0D;
+
+                    if (biome == BiomeSilurianCooksonia.biome) {
+                        //Flatten these out somewhat:
+                        d4 = (1.0F + d4) / 2.0F;
+                        d2 = d4;
+                        d3 = d4;
+                    }
+
                     double d5 = MathHelper.clampedLerp(d2, d3, d4) - d1;
                     if (l1 > 29) {
                         double d6 = (double) ((float) (l1 - 29) / 3.0F);
@@ -358,6 +389,36 @@ public class ChunkProviderSilurian implements IChunkGenerator {
                                 iblockstate = FLUID;
                             }
                         }
+
+                        //For the Land biomes, make hills a bit craggy:
+                        if (((BiomeSilurian)biome).getBiomeType() == EnumBiomeTypeSilurian.BarrenLand
+                        ) {
+                            //If it's over 80 blocks then start to fill in more as cobble
+                            //up to 125
+                            int minHeight = 80;
+                            if (j1 >= minHeight) {
+                                int j2 = Math.max(0, 125 - j1);
+                                double stoneFactor = 4 * (double) j2 / (125D - (double) minHeight);
+                                if (Math.random() >= stoneFactor) {
+                                    if (Math.random() > 0.22) {
+                                        iblockstate = Blocks.COBBLESTONE.getDefaultState();
+                                    } else {
+                                        iblockstate = Blocks.GRAVEL.getStateFromMeta(0);
+                                        if (rand.nextInt(8) == 0) {
+                                            iblockstate = Blocks.COBBLESTONE.getDefaultState();
+                                        }
+                                    }
+                                }
+                                if (Math.random() >= stoneFactor) {
+                                    iblockstate1 = Blocks.COBBLESTONE.getDefaultState();
+                                    if (rand.nextInt(8) == 0) {
+                                        iblockstate1 = Blocks.GRAVEL.getDefaultState();
+                                    }
+                                }
+                            }
+                        }
+
+
                         j = k;
                         if (j1 >= i - 1) {
                             chunkPrimerIn.setBlockState(i1, j1, l, iblockstate);
@@ -365,24 +426,82 @@ public class ChunkProviderSilurian implements IChunkGenerator {
                         } else if (j1 < i - 1) {
                             iblockstate = AIR;
                             iblockstate1 = STONE;
-                            if (Math.random() > 0.7) {
+                            if (biome == BiomeSilurianReef.biome
+                                    && rand.nextInt(3) == 0) {
+                                int s = rand.nextInt(4);
+                                switch (s) {
+                                    case 0: default:
+                                        chunkPrimerIn.setBlockState(i1, j1, l, BlockStromatoporoideaReef.block.getDefaultState().withProperty(BlockStromatoporoideaReef.FACING, EnumFacing.NORTH));
+                                        break;
+
+                                    case 1:
+                                        chunkPrimerIn.setBlockState(i1, j1, l, BlockStromatoporoideaReef.block.getDefaultState().withProperty(BlockStromatoporoideaReef.FACING, EnumFacing.EAST));
+                                        break;
+
+                                    case 2:
+                                        chunkPrimerIn.setBlockState(i1, j1, l, BlockStromatoporoideaReef.block.getDefaultState().withProperty(BlockStromatoporoideaReef.FACING, EnumFacing.SOUTH));
+                                        break;
+
+                                    case 3:
+                                        chunkPrimerIn.setBlockState(i1, j1, l, BlockStromatoporoideaReef.block.getDefaultState().withProperty(BlockStromatoporoideaReef.FACING, EnumFacing.WEST));
+                                        break;
+                                }
+                            }
+                            else if (biome == BiomeSilurianCoral.biome
+                                    && rand.nextInt(4) == 0) {
+                                int s = rand.nextInt(3);
+                                switch (s) {
+                                    case 0: default:
+                                        chunkPrimerIn.setBlockState(i1, j1 + Math.min(1,rand.nextInt(3)), l, BlockTabulata_Block1.block.getDefaultState());
+                                        break;
+
+                                    case 1:
+                                        chunkPrimerIn.setBlockState(i1, j1 + Math.min(1,rand.nextInt(3)), l, BlockTabulata_Block2.block.getDefaultState());
+                                        break;
+
+                                    case 2:
+                                        chunkPrimerIn.setBlockState(i1, j1 + Math.min(1,rand.nextInt(3)), l, BlockTabulata_Block3.block.getDefaultState());
+                                        break;
+                                }
+                            }
+                            else if (biome == BiomeSilurianCooksonia.biome) {
+                                if (rand.nextInt(3) == 0) {
+                                    chunkPrimerIn.setBlockState(i1, j1, l, BlockSandBlackWavy.block.getDefaultState());
+                                }
+                                else {
+                                    chunkPrimerIn.setBlockState(i1, j1, l, BlockPeat.block.getDefaultState());
+                                }
+                            }
+                            else if (Math.random() > 0.7) {
                                 chunkPrimerIn.setBlockState(i1, j1, l, Blocks.STONE.getDefaultState());
                             }
                             else {
                                 if (Math.random() > 0.6) {
+                                    IBlockState gravelstate = Blocks.SAND.getStateFromMeta(0);
+                                    IBlockState gravelstatewavy = BlockSandWavy.block.getDefaultState();
+                                    if (biome == BiomeSilurianSeaRocky.biome) {
+                                        gravelstate = BlockSandWavy.block.getDefaultState();
+                                        gravelstatewavy = Blocks.COBBLESTONE.getDefaultState();
+                                    }
                                     if (Math.random() > 0.82) {
-                                        chunkPrimerIn.setBlockState(i1, j1, l, Blocks.GRAVEL.getDefaultState());
+                                        chunkPrimerIn.setBlockState(i1, j1, l, gravelstate);
                                     }
                                     else {
-                                        chunkPrimerIn.setBlockState(i1, j1, l, BlockGravelWavy.block.getDefaultState());
+                                        chunkPrimerIn.setBlockState(i1, j1, l, gravelstatewavy);
                                     }
                                 } else {
                                     if (Math.random() > 0.25) {
+                                        IBlockState sandstate = Blocks.SAND.getStateFromMeta(0);
+                                        IBlockState sandstatewavy = BlockSandWavy.block.getDefaultState();
+                                        if (biome == BiomeSilurianSeaRocky.biome) {
+                                            sandstate = Blocks.GRAVEL.getDefaultState();
+                                            sandstatewavy =BlockGravelWavy.block.getDefaultState();
+                                        }
                                         if (Math.random() > 0.85) {
-                                            chunkPrimerIn.setBlockState(i1, j1, l, Blocks.SAND.getStateFromMeta(0));
+                                            chunkPrimerIn.setBlockState(i1, j1, l, sandstate);
                                         }
                                         else {
-                                            chunkPrimerIn.setBlockState(i1, j1, l, BlockSandWavy.block.getDefaultState());
+                                            chunkPrimerIn.setBlockState(i1, j1, l, sandstatewavy);
                                         }
                                     }
                                 }

@@ -8,25 +8,17 @@ import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerSilurianBiomes extends GenLayer {
 
-    public Biome OS_OCEAN = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea"));
-    public  int OS_OCEAN_ID =  Biome.getIdForBiome(OS_OCEAN);
-    public  Biome OS_LAND = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_land"));
-    public  int OS_LAND_ID =  Biome.getIdForBiome(OS_LAND);
-    public  Biome OS_OCEAN_GARDEN = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_garden"));
-    public  int OS_OCEAN_GARDEN_ID =  Biome.getIdForBiome(OS_OCEAN_GARDEN);
+    public Biome SILURIAN_OCEAN = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore"));
+    public int SILURIAN_OCEAN_ID =  Biome.getIdForBiome(SILURIAN_OCEAN);
+    public Biome SILURIAN_OCEAN_HELPER = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore_helper"));
+    public int SILURIAN_OCEAN_HELPER_ID =  Biome.getIdForBiome(SILURIAN_OCEAN_HELPER);
+    public Biome SILURIAN_LAND = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_land"));
+    public int SILURIAN_LAND_ID =  Biome.getIdForBiome(SILURIAN_LAND);
 
-    private final int OSBiomes[] = new int[] {
-        OS_OCEAN_ID,
-        OS_OCEAN_ID,
-        OS_OCEAN_ID,
-        OS_OCEAN_ID,
-        OS_OCEAN_ID,
-        OS_OCEAN_ID,
-        OS_OCEAN_GARDEN_ID,
-        OS_LAND_ID,
-        OS_LAND_ID,
-        OS_LAND_ID,
-        OS_LAND_ID
+    private final int SilurianBiomes[] = new int[] {
+            SILURIAN_OCEAN_ID,
+            SILURIAN_OCEAN_HELPER_ID,
+            SILURIAN_LAND_ID
     };
 
     public GenLayerSilurianBiomes(long seed) {
@@ -39,7 +31,7 @@ public class GenLayerSilurianBiomes extends GenLayer {
         for (int dz = 0; dz < height; dz++) {
             for (int dx = 0; dx < width; dx++) {
                 initChunkSeed(dx + x, dz + z);
-                dest[dx + dz * width] = OSBiomes[nextInt(OSBiomes.length)];
+                dest[dx + dz * width] = SilurianBiomes[nextInt(SilurianBiomes.length)];
             }
         }
         return dest;

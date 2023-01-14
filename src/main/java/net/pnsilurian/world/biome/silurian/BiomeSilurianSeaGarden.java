@@ -3,6 +3,7 @@ package net.pnsilurian.world.biome.silurian;
 
 import net.lepidodendron.ElementsLepidodendronMod;
 import net.lepidodendron.block.BlockCoral;
+import net.lepidodendron.block.BlockStromatoporoideaReef;
 import net.lepidodendron.util.EnumBiomeTypeSilurian;
 import net.lepidodendron.world.biome.silurian.BiomeSilurian;
 import net.lepidodendron.world.gen.*;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -34,11 +36,12 @@ public class BiomeSilurianSeaGarden extends ElementsLepidodendronMod.ModElement 
 	public void init(FMLInitializationEvent event) {
 		BiomeDictionary.addTypes(biome, BiomeDictionary.Type.OCEAN);
 		BiomeDictionary.addTypes(biome, BiomeDictionary.Type.WATER);
+		BiomeDictionary.addTypes(biome, BiomeDictionary.Type.LUSH);
 	}
 
 	static class BiomeGenCustom extends BiomeSilurian {
 		public BiomeGenCustom() {
-			super(new BiomeProperties("Silurian Crinoid Garden").setRainfall(0.5F).setBaseHeight(-0.7F).setHeightVariation(0.05F).setTemperature(0.5F));
+			super(new BiomeProperties("Silurian Crinoid Garden").setRainfall(0.5F).setBaseHeight(-0.7F).setHeightVariation(0.05F).setTemperature(2.25F));
 			setRegistryName("lepidodendron:silurian_sea_garden");
 			topBlock = Blocks.GRAVEL.getDefaultState();
 			fillerBlock = Blocks.GRAVEL.getDefaultState();
@@ -57,16 +60,12 @@ public class BiomeSilurianSeaGarden extends ElementsLepidodendronMod.ModElement 
 			this.spawnableCaveCreatureList.clear();
 		}
 		
-		protected static final WorldGenArchaeopterisTree ARCHAEOPTERIS_TREE = new WorldGenArchaeopterisTree(false);
 		protected static final WorldGenRockPiles ROCK_PILES_GENERATOR = new WorldGenRockPiles();
-    	protected static final WorldGenNematophyta NEMATOPHYTA_GENERATOR = new WorldGenNematophyta();
-		protected static final WorldGenAncientMoss ANCIENT_MOSS_GENERATOR = new WorldGenAncientMoss();
-		protected static final WorldGenBaragwanathia BARAGWANATHIA_GENERATOR = new WorldGenBaragwanathia();
-		protected static final WorldGenReef REEF_GENERATOR = new WorldGenReef();
+    	protected static final WorldGenReef REEF_GENERATOR = new WorldGenReef();
 
 		public WorldGenAbstractTree getRandomTreeFeature(Random rand)
 	    {
-	        return ARCHAEOPTERIS_TREE;
+	        return null;
 	    }
 
 		@Override
@@ -84,50 +83,31 @@ public class BiomeSilurianSeaGarden extends ElementsLepidodendronMod.ModElement 
 	                ROCK_PILES_GENERATOR.generate(worldIn, rand, blockpos);
 	            }
 	        }
-	        
 
-			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-				for (int i = 0; i < 20; ++i)
-				{
-					int j = rand.nextInt(16) + 8;
-					int k = rand.nextInt(16) + 8;
-					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-					NEMATOPHYTA_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
-				}
-
-	        if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-	        for (int i = 0; i < 50; ++i)
-	        {
-	            int j = rand.nextInt(16) + 8;
-	            int k = rand.nextInt(16) + 8;
-	            int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-	            ANCIENT_MOSS_GENERATOR.generate(worldIn, rand, pos.add(j, l, k), 15);
-	        }
-	        if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-	        for (int i = 0; i < 10; ++i)
-	        {
-	            int j = rand.nextInt(16) + 8;
-	            int k = rand.nextInt(16) + 8;
-	            int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-	            BARAGWANATHIA_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
-	        }
-
-			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.ROCK))
+			if (net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), DecorateBiomeEvent.Decorate.EventType.ROCK))
 				for (int i = 0; i < 2; ++i)
 				{
-					int j = rand.nextInt(16) + 8;
-					int k = rand.nextInt(16) + 8;
+					int radius = 3;
+					int j;
+					int k;
+					if (radius < 14) {
+						j = 16 + rand.nextInt(16 - radius - 2) - rand.nextInt(16 - radius - 2);
+						k = 16 + rand.nextInt(16 - radius - 2) - rand.nextInt(16 - radius - 2);
+					}
+					else {
+						radius = 14;
+						j = 16;
+						k = 16;
+					}
 					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
 					BlockPos pos1 = pos.add(j, l, k);
 					if (
-							(pos1.getY() < worldIn.getSeaLevel() - 5)
-									&& (worldIn.getBlockState(pos1).getMaterial() == Material.WATER)
-									&& (worldIn.getBlockState(pos1.up()).getMaterial() == Material.WATER)
-									&& (worldIn.getBlockState(pos1.up(2)).getMaterial() == Material.WATER)
+							(pos1.getY() < worldIn.getSeaLevel())
 					) {
-						REEF_GENERATOR.generate(worldIn, rand, pos1, 2, BlockCoral.block.getDefaultState());
+						REEF_GENERATOR.generate(worldIn, rand, pos1, radius, BlockStromatoporoideaReef.block.getDefaultState());
 					}
 				}
+
 	        super.decorate(worldIn, rand, pos);
 		}
 

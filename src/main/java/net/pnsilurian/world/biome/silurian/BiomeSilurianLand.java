@@ -36,9 +36,9 @@ public class BiomeSilurianLand extends ElementsLepidodendronMod.ModElement {
 
 	static class BiomeGenCustom extends BiomeSilurian {
 		public BiomeGenCustom() {
-			super(new BiomeProperties("Silurian Barren Land").setRainfall(0.5F).setBaseHeight(0.6F).setHeightVariation(0.2F).setTemperature(0.5F));
+			super(new BiomeProperties("Silurian Barren Land").setRainfall(0.5F).setBaseHeight(0.5F).setHeightVariation(0.22F).setTemperature(2.25F));
 			setRegistryName("lepidodendron:silurian_land");
-			topBlock = Blocks.GRAVEL.getStateFromMeta(0);
+			topBlock = Blocks.STONE.getStateFromMeta(0);
 			fillerBlock = Blocks.STONE.getStateFromMeta(0);
 			decorator.treesPerChunk = -999;
 			decorator.flowersPerChunk = 0;
@@ -47,7 +47,7 @@ public class BiomeSilurianLand extends ElementsLepidodendronMod.ModElement {
 			decorator.bigMushroomsPerChunk = 0;
 			decorator.reedsPerChunk = 0;
 			decorator.cactiPerChunk = 0;
-			decorator.sandPatchesPerChunk = 100;
+			decorator.sandPatchesPerChunk = 0;
 			decorator.gravelPatchesPerChunk = 0;
 			this.spawnableMonsterList.clear();
 			this.spawnableCreatureList.clear();
@@ -55,15 +55,12 @@ public class BiomeSilurianLand extends ElementsLepidodendronMod.ModElement {
 			this.spawnableCaveCreatureList.clear();
 		}
 
-		protected static final WorldGenArchaeopterisTree ARCHAEOPTERIS_TREE = new WorldGenArchaeopterisTree(false);
 		protected static final WorldGenRockPiles ROCK_PILES_GENERATOR = new WorldGenRockPiles();
     	protected static final WorldGenNematophyta NEMATOPHYTA_GENERATOR = new WorldGenNematophyta();
-		protected static final WorldGenAncientMoss ANCIENT_MOSS_GENERATOR = new WorldGenAncientMoss();
-		protected static final WorldGenBaragwanathia BARAGWANATHIA_GENERATOR = new WorldGenBaragwanathia();
 
 		public WorldGenAbstractTree getRandomTreeFeature(Random rand)
 	    {
-	        return ARCHAEOPTERIS_TREE;
+	        return null;
 	    }
 
 		@Override
@@ -91,29 +88,12 @@ public class BiomeSilurianLand extends ElementsLepidodendronMod.ModElement {
 					NEMATOPHYTA_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
 				}
 
-	        if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-	        for (int i = 0; i < 50; ++i)
-	        {
-	            int j = rand.nextInt(16) + 8;
-	            int k = rand.nextInt(16) + 8;
-	            int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-	            ANCIENT_MOSS_GENERATOR.generate(worldIn, rand, pos.add(j, l, k), 15);
-	        }
-	        if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-	        for (int i = 0; i < 10; ++i)
-	        {
-	            int j = rand.nextInt(16) + 8;
-	            int k = rand.nextInt(16) + 8;
-	            int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-	            BARAGWANATHIA_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
-	        }
-
 	        super.decorate(worldIn, rand, pos);
 		}
 
 		@Override
 		public EnumBiomeTypeSilurian getBiomeType() {
-			return EnumBiomeTypeSilurian.Land;
+			return EnumBiomeTypeSilurian.BarrenLand;
 		}
 	}
 

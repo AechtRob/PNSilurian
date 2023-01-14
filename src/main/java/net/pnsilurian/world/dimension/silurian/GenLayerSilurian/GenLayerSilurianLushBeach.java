@@ -9,27 +9,28 @@ import net.minecraft.world.gen.layer.IntCache;
 public class GenLayerSilurianLushBeach extends GenLayer
 {
 
-    public  Biome OS_OCEAN = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea"));
-    public  int OS_OCEAN_ID =  Biome.getIdForBiome(OS_OCEAN);
-    public  Biome OS_OCEAN_ICE = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_ice"));
-    public  int OS_OCEAN_ICE_ID =  Biome.getIdForBiome(OS_OCEAN_ICE);
+    public Biome SILURIAN_OCEAN_SHALLOW = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore"));
+    public int SILURIAN_OCEAN_SHALLOW_ID =  Biome.getIdForBiome(SILURIAN_OCEAN_SHALLOW);
+    public Biome SILURIAN_OCEAN_SHALLOW_HELPER = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore_helper"));
+    public int SILURIAN_OCEAN_SHALLOW_HELPER_ID =  Biome.getIdForBiome(SILURIAN_OCEAN_SHALLOW_HELPER);
+    public Biome SILURIAN_OCEAN_SANDY = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_sandy"));
+    public int SILURIAN_OCEAN_SANDY_ID =  Biome.getIdForBiome(SILURIAN_OCEAN_SANDY);
+    public Biome SILURIAN_OCEAN_ROCKY = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea"));
+    public int SILURIAN_SILURIAN_OCEAN_ROCKY_ID =  Biome.getIdForBiome(SILURIAN_OCEAN_ROCKY);
 
-    public  Biome OS_LAND = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_land"));
-    public  int OS_LAND_ID =  Biome.getIdForBiome(OS_LAND);
+    public Biome SILURIAN_LAND = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_land"));
+    public int SILURIAN_LAND_ID =  Biome.getIdForBiome(SILURIAN_LAND);
 
-    public  Biome OS_LUSH = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:lush_patch"));
-    public  int OS_LUSH_ID =  Biome.getIdForBiome(OS_LUSH);
+    public Biome SILURIAN_LUSH = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:lush_patch"));
+    public int SILURIAN_LUSH_ID =  Biome.getIdForBiome(SILURIAN_LUSH);
 
     private final int LandBiomes[] = new int[] {
-            OS_LAND_ID,
-            OS_LAND_ID,
-            OS_LAND_ID,
-            OS_LAND_ID,
-            OS_LAND_ID,
-            OS_LAND_ID,
-            OS_LAND_ID,
-            OS_LAND_ID,
-            OS_LUSH_ID
+            SILURIAN_LAND_ID,
+            SILURIAN_LAND_ID,
+            SILURIAN_LAND_ID,
+            SILURIAN_LAND_ID,
+            SILURIAN_LAND_ID,
+            SILURIAN_LUSH_ID
     };
 
     public GenLayerSilurianLushBeach(long seed, GenLayer genLayer)
@@ -51,7 +52,7 @@ public class GenLayerSilurianLushBeach extends GenLayer
                 int k = aint[j + 1 + (i + 1) * (areaWidth + 2)];
                 Biome biome = Biome.getBiome(k);
 
-                if (k == OS_LAND_ID)
+                if (k == SILURIAN_LAND_ID)
                 {
                     int l1 = aint[j + 1 + (i + 1 - 1) * (areaWidth + 2)];
                     int k2 = aint[j + 1 + 1 + (i + 1) * (areaWidth + 2)];
@@ -78,7 +79,8 @@ public class GenLayerSilurianLushBeach extends GenLayer
     }
 
     private boolean isOcean(int biomeID) {
-        if (biomeID == OS_OCEAN_ID || biomeID == OS_OCEAN_ICE_ID) {
+        if (biomeID == SILURIAN_OCEAN_SHALLOW_ID || biomeID == SILURIAN_OCEAN_SANDY_ID
+                || biomeID == SILURIAN_SILURIAN_OCEAN_ROCKY_ID || biomeID == SILURIAN_OCEAN_SHALLOW_HELPER_ID) {
             return true;
         }
         return false;

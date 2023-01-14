@@ -36,10 +36,10 @@ public class BiomeSilurianLushPatch extends ElementsLepidodendronMod.ModElement 
 
 	static class BiomeGenCustom extends BiomeSilurian {
 		public BiomeGenCustom() {
-			super(new BiomeProperties("Silurian Lush Patch").setRainfall(0.2F).setBaseHeight(-0.1F).setHeightVariation(0.08F).setTemperature(2.0F).setWaterColor(14745518));
+			super(new BiomeProperties("Silurian Lush Patch").setRainfall(0.2F).setBaseHeight(-0.1F).setHeightVariation(0.08F).setTemperature(2.25F).setWaterColor(14745518));
 			setRegistryName("lepidodendron:silurian_lush_patch");
-			topBlock = BlockCoarseSiltyDirt.block.getDefaultState();
-			fillerBlock = Blocks.CLAY.getDefaultState();
+			topBlock = Blocks.GRAVEL.getDefaultState();
+			fillerBlock = Blocks.GRAVEL.getDefaultState();
 			decorator.treesPerChunk = -999;
 			decorator.flowersPerChunk = 0;
 			decorator.grassPerChunk = 0;
@@ -55,46 +55,29 @@ public class BiomeSilurianLushPatch extends ElementsLepidodendronMod.ModElement 
 			this.spawnableCaveCreatureList.clear();
 		}
 
-		protected static final WorldGenArchaeopterisTree ARCHAEOPTERIS_TREE = new WorldGenArchaeopterisTree(false);
 		protected static final WorldGenPrototaxites PROTOTAXITES_GENERATOR = new WorldGenPrototaxites();
 		protected static final WorldGenCooksonia COOKSONIA_GENERATOR = new WorldGenCooksonia();
 		protected static final WorldGenZosterophyllum ZOSTEROPHYLLUM_GENERATOR = new WorldGenZosterophyllum();
 		protected static final WorldGenNematophyta NEMATOPHYTA_GENERATOR = new WorldGenNematophyta();
 		protected static final WorldGenAncientMoss ANCIENT_MOSS_GENERATOR = new WorldGenAncientMoss();
 		protected static final WorldGenBaragwanathia BARAGWANATHIA_GENERATOR = new WorldGenBaragwanathia();
-		protected static final WorldGenGravelPatch CLAY_PATCH_GENERATOR = new WorldGenGravelPatch(Blocks.CLAY, 3);
-		protected static final WorldGenGravelPatch GRAVEL_PATCH_GENERATOR = new WorldGenGravelPatch(Blocks.GRAVEL, 3);
+		//protected static final WorldGenGravelPatch CLAY_PATCH_GENERATOR = new WorldGenGravelPatch(Blocks.CLAY, 3);
+		//protected static final WorldGenGravelPatch GRAVEL_PATCH_GENERATOR = new WorldGenGravelPatch(Blocks.GRAVEL, 3);
 		protected static final WorldGenPuddles PUDDLES_GENERATOR = new WorldGenPuddles();
 		protected static final WorldGenSandyDirt SANDY_DIRT_GENERATOR = new WorldGenSandyDirt();
-		protected static final WorldGenGravel GRAVEL_GENERATOR = new WorldGenGravel();
+		protected static final WorldGenBlackSandyDirt BLACK_DIRT_GENERATOR = new WorldGenBlackSandyDirt();
+		//protected static final WorldGenGravel GRAVEL_GENERATOR = new WorldGenGravel();
+		protected static final WorldGenSlimyAlgae SLIMY_GENERATOR = new WorldGenSlimyAlgae();
 
 		public WorldGenAbstractTree getRandomTreeFeature(Random rand)
 	    {
-	        return ARCHAEOPTERIS_TREE;
+	        return null;
 	    }
 
 
 		@Override
 	    public void decorate(World worldIn, Random rand, BlockPos pos)
 	    {
-
-			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-			{
-				for (int j1 = 0; j1 < 10; ++j1)
-				{
-					int j = rand.nextInt(16) + 8;
-					int k = rand.nextInt(16) + 8;
-					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-					this.CLAY_PATCH_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
-				}
-				for (int j1 = 0; j1 < 10; ++j1)
-				{
-					int j = rand.nextInt(16) + 8;
-					int k = rand.nextInt(16) + 8;
-					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-					this.GRAVEL_PATCH_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
-				}
-			}
 
 			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
 				for (int i = 0; i < 75; ++i)
@@ -106,7 +89,7 @@ public class BiomeSilurianLushPatch extends ElementsLepidodendronMod.ModElement 
 				}
 
 			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-			for (int i = 0; i < 52; ++i)
+			for (int i = 0; i < 22; ++i)
 			{
 				int j = rand.nextInt(16) + 8;
 				int k = rand.nextInt(16) + 8;
@@ -114,13 +97,13 @@ public class BiomeSilurianLushPatch extends ElementsLepidodendronMod.ModElement 
 				SANDY_DIRT_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
 			}
 			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-			for (int i = 0; i < 24; ++i)
-			{
-				int j = rand.nextInt(16) + 8;
-				int k = rand.nextInt(16) + 8;
-				int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-				GRAVEL_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
-			}
+				for (int i = 0; i < 36; ++i)
+				{
+					int j = rand.nextInt(16) + 8;
+					int k = rand.nextInt(16) + 8;
+					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
+					SANDY_DIRT_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
+				}
 
 			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
 				for (int i = 0; i < 25; ++i)
@@ -166,8 +149,9 @@ public class BiomeSilurianLushPatch extends ElementsLepidodendronMod.ModElement 
 					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
 					ANCIENT_MOSS_GENERATOR.generate(worldIn, rand, pos.add(j, l, k), 15);
 				}
+
 			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
-				for (int i = 0; i < 10; ++i)
+				for (int i = 0; i < 18; ++i)
 				{
 					int j = rand.nextInt(16) + 8;
 					int k = rand.nextInt(16) + 8;
@@ -175,12 +159,21 @@ public class BiomeSilurianLushPatch extends ElementsLepidodendronMod.ModElement 
 					BARAGWANATHIA_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
 				}
 
+			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
+				for (int i = 0; i < 28; ++i)
+				{
+					int j = rand.nextInt(16) + 8;
+					int k = rand.nextInt(16) + 8;
+					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
+					SLIMY_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
+				}
+
 			super.decorate(worldIn, rand, pos);
 	    }
 
 	    @Override
 		public EnumBiomeTypeSilurian getBiomeType() {
-			return EnumBiomeTypeSilurian.Land;
+			return EnumBiomeTypeSilurian.LushPatch;
 		}
 	}
 
