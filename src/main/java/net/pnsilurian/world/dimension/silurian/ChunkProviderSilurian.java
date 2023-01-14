@@ -23,10 +23,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.*;
-import net.pnsilurian.world.biome.silurian.BiomeSilurianCooksonia;
-import net.pnsilurian.world.biome.silurian.BiomeSilurianCoral;
-import net.pnsilurian.world.biome.silurian.BiomeSilurianReef;
-import net.pnsilurian.world.biome.silurian.BiomeSilurianSeaRocky;
+import net.pnsilurian.world.biome.silurian.*;
 
 import java.util.List;
 import java.util.Random;
@@ -378,7 +375,11 @@ public class ChunkProviderSilurian implements IChunkGenerator {
                         if (k <= 0) {
                             iblockstate = AIR;
                             iblockstate1 = STONE;
-                        } else if (j1 >= i - 4 && j1 <= i + 1) {
+                        }
+                        else if (j1 <= i + 2 && j1 >= i - 1 && Math.random() > 0.25 && biome == BiomeSilurianCreekSands.biome) {
+                            iblockstate = Blocks.GRAVEL.getDefaultState();
+                        }
+                        else if (j1 >= i - 4 && j1 <= i + 1) {
                             iblockstate = biome.topBlock;
                             iblockstate1 = biome.fillerBlock;
                         }
@@ -393,12 +394,12 @@ public class ChunkProviderSilurian implements IChunkGenerator {
                         //For the Land biomes, make hills a bit craggy:
                         if (((BiomeSilurian)biome).getBiomeType() == EnumBiomeTypeSilurian.BarrenLand
                         ) {
-                            //If it's over 80 blocks then start to fill in more as cobble
-                            //up to 125
-                            int minHeight = 80;
+                            //If it's over 70 blocks then start to fill in more as cobble
+                            //up to 100
+                            int minHeight = 70;
                             if (j1 >= minHeight) {
-                                int j2 = Math.max(0, 125 - j1);
-                                double stoneFactor = 4 * (double) j2 / (125D - (double) minHeight);
+                                int j2 = Math.max(0, 100 - j1);
+                                double stoneFactor = 4 * (double) j2 / (100D - (double) minHeight);
                                 if (Math.random() >= stoneFactor) {
                                     if (Math.random() > 0.22) {
                                         iblockstate = Blocks.COBBLESTONE.getDefaultState();
@@ -411,6 +412,33 @@ public class ChunkProviderSilurian implements IChunkGenerator {
                                 }
                                 if (Math.random() >= stoneFactor) {
                                     iblockstate1 = Blocks.COBBLESTONE.getDefaultState();
+                                    if (rand.nextInt(8) == 0) {
+                                        iblockstate1 = Blocks.GRAVEL.getDefaultState();
+                                    }
+                                }
+                            }
+                        }
+
+                        if (((BiomeSilurian)biome).getBiomeType() == EnumBiomeTypeSilurian.Sands
+                        ) {
+                            //If it's over 70 blocks then start to fill in more as cobble
+                            //up to 100
+                            int minHeight = 70;
+                            if (j1 >= minHeight) {
+                                int j2 = Math.max(0, 100 - j1);
+                                double stoneFactor = 4 * (double) j2 / (100D - (double) minHeight);
+                                if (Math.random() >= stoneFactor && Math.random() > 0.3) {
+                                    if (Math.random() > 0.75) {
+                                        iblockstate = Blocks.COBBLESTONE.getDefaultState();
+                                    } else {
+                                        iblockstate = BlockCoarseSandyDirtBlack.block.getDefaultState();
+                                        if (rand.nextInt(4) == 0) {
+                                            iblockstate = Blocks.GRAVEL.getDefaultState();
+                                        }
+                                    }
+                                }
+                                if (Math.random() >= stoneFactor && Math.random() > 0.3) {
+                                    iblockstate1 = Blocks.STONE.getDefaultState();
                                     if (rand.nextInt(8) == 0) {
                                         iblockstate1 = Blocks.GRAVEL.getDefaultState();
                                     }

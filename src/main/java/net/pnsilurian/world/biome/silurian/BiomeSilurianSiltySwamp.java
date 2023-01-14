@@ -190,7 +190,7 @@ public class BiomeSilurianSiltySwamp extends ElementsLepidodendronMod.ModElement
 
 	    @Override
 		public EnumBiomeTypeSilurian getBiomeType() {
-			return EnumBiomeTypeSilurian.LushPatch;
+			return EnumBiomeTypeSilurian.Swamp;
 		}
 	}
 

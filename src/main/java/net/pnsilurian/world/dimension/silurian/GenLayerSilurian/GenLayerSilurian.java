@@ -63,10 +63,24 @@ public class GenLayerSilurian {
         biomes = new GenLayerZoom(1006L, biomes);
 
 
-        GenLayer genlayervoronoizoom = new GenLayerVoronoiZoom(10L, biomes);
-        biomes.initWorldGenSeed(seed);
+        //Build and superimpose creeks:
+        GenLayer genlayercreek = new GenLayerRiverInit(100L, biomes);
+        GenLayer genlayercreek2 = GenLayerZoom.magnify(1000L, genlayercreek, 1);
+        GenLayer genlayercreek3 = GenLayerZoom.magnify(1000L, genlayercreek2, 2);
+        GenLayer genlayercreek4 = GenLayerZoom.magnify(1000L, genlayercreek3, 2);
+        GenLayer genlayercreek5 = GenLayerZoom.magnify(1000L, genlayercreek4, 2);
+        GenLayer genlayercreek6 = new GenLayerRiver(1L, genlayercreek5);
+        GenLayer genlayercreek7 = new GenLayerSmooth(1000L, genlayercreek6);
+        GenLayer genlayercreekfinal = new GenLayerSilurianRiverMix(100L, biomes, genlayercreek7);
+
+        GenLayer genlayervoronoizoom = new GenLayerVoronoiZoom(10L, genlayercreekfinal);
+
+        genlayercreekfinal.initWorldGenSeed(seed);
         genlayervoronoizoom.initWorldGenSeed(seed);
-        return (new GenLayer[] { biomes, genlayervoronoizoom });
+        biomes.initWorldGenSeed(seed);
+
+        genlayervoronoizoom.initWorldGenSeed(seed);
+        return (new GenLayer[] { genlayercreekfinal, genlayervoronoizoom, genlayercreekfinal });
     }
 
 }
