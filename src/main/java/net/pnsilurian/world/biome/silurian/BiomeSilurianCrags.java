@@ -40,8 +40,8 @@ public class BiomeSilurianCrags extends ElementsLepidodendronMod.ModElement {
 		public BiomeGenCustom() {
 			super(new BiomeProperties("Silurian Hilly Wastes").setRainfall(0.4F).setBaseHeight(2.75F).setHeightVariation(0.4F).setTemperature(2.25F));
 			setRegistryName("lepidodendron:silurian_crags");
-			topBlock = Blocks.STONE.getStateFromMeta(0);
-			fillerBlock = Blocks.STONE.getStateFromMeta(0);
+			topBlock = Blocks.STONE.getStateFromMeta(0);//Handled in chunk provider
+			fillerBlock = Blocks.STONE.getStateFromMeta(0);//Handled in chunk provider
 			decorator.treesPerChunk = -999;
 			decorator.flowersPerChunk = 0;
 			decorator.grassPerChunk = 0;

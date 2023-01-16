@@ -40,8 +40,8 @@ public class BiomeSilurianLagoon extends ElementsLepidodendronMod.ModElement {
 		public BiomeGenCustom() {
 			super(new BiomeProperties("Silurian Lagoons").setRainfall(0.5F).setBaseHeight(-0.175F).setHeightVariation(0.00F).setTemperature(2.25F).setRainfall(0.9F));
 			setRegistryName("lepidodendron:silurian_lagoon");
-			topBlock = Blocks.STONE.getStateFromMeta(0);
-			fillerBlock = Blocks.STONE.getStateFromMeta(0);
+			topBlock = Blocks.STONE.getStateFromMeta(0);//Handled in chunk provider
+			fillerBlock = Blocks.STONE.getStateFromMeta(0);//Handled in chunk provider
 			decorator.treesPerChunk = -999;
 			decorator.flowersPerChunk = 0;
 			decorator.grassPerChunk = 0;
