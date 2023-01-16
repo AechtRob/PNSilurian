@@ -7,11 +7,13 @@ import net.lepidodendron.util.EnumBiomeTypeSilurian;
 import net.lepidodendron.world.biome.silurian.BiomeSilurian;
 import net.lepidodendron.world.gen.WorldGenReef;
 import net.lepidodendron.world.gen.WorldGenRockPiles;
+import net.lepidodendron.world.gen.WorldGenSandNearWater;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -41,8 +43,8 @@ public class BiomeSilurianBeachSand extends ElementsLepidodendronMod.ModElement 
 		public BiomeGenCustom() {
 			super(new BiomeProperties("Silurian Sandy Beach").setRainfall(0.5F).setBaseHeight(0.0F).setHeightVariation(0.025F).setTemperature(2.25F));
 			setRegistryName("lepidodendron:silurian_beach_sand");
-			topBlock = Blocks.GRAVEL.getDefaultState();
-			fillerBlock = Blocks.GRAVEL.getDefaultState();
+			topBlock = Blocks.STONE.getDefaultState();//Handled in chunk provider
+			fillerBlock = Blocks.STONE.getDefaultState();//Handled in chunk provider
 			decorator.treesPerChunk = -999;
 			decorator.flowersPerChunk = 0;
 			decorator.grassPerChunk = 0;
@@ -60,6 +62,7 @@ public class BiomeSilurianBeachSand extends ElementsLepidodendronMod.ModElement 
 
 		protected static final WorldGenRockPiles ROCK_PILES_GENERATOR = new WorldGenRockPiles();
     	protected static final WorldGenReef REEF_GENERATOR = new WorldGenReef();
+    	protected static final WorldGenSandNearWater SAND_GENERATOR = new WorldGenSandNearWater();
 
 		public WorldGenAbstractTree getRandomTreeFeature(Random rand)
 	    {
@@ -81,6 +84,13 @@ public class BiomeSilurianBeachSand extends ElementsLepidodendronMod.ModElement 
 	                ROCK_PILES_GENERATOR.generate(worldIn, rand, blockpos);
 	            }
 	        }
+			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), DecorateBiomeEvent.Decorate.EventType.GRASS))
+				for (int i = 0; i < 64; ++i)
+				{
+					int j = rand.nextInt(16) + 8;
+					int k = rand.nextInt(16) + 8;
+					SAND_GENERATOR.generate(worldIn, rand, worldIn.getTopSolidOrLiquidBlock(new BlockPos(pos.getX() + j, 0, pos.getZ() + k)).up());
+				}
 
 			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.ROCK))
 				for (int i = 0; i < 8; ++i)

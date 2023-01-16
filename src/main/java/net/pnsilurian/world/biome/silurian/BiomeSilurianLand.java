@@ -38,8 +38,8 @@ public class BiomeSilurianLand extends ElementsLepidodendronMod.ModElement {
 		public BiomeGenCustom() {
 			super(new BiomeProperties("Silurian Barren Land").setRainfall(0.5F).setBaseHeight(0.5F).setHeightVariation(0.22F).setTemperature(2.25F));
 			setRegistryName("lepidodendron:silurian_land");
-			topBlock = Blocks.STONE.getStateFromMeta(0);
-			fillerBlock = Blocks.STONE.getStateFromMeta(0);
+			topBlock = Blocks.STONE.getStateFromMeta(0);//Handled in chunk provider
+			fillerBlock = Blocks.STONE.getStateFromMeta(0);//Handled in chunk provider
 			decorator.treesPerChunk = -999;
 			decorator.flowersPerChunk = 0;
 			decorator.grassPerChunk = 0;
