@@ -379,6 +379,12 @@ public class ChunkProviderSilurian implements IChunkGenerator {
                         else if (j1 <= i + 2 && j1 >= i - 1 && Math.random() > 0.25 && biome == BiomeSilurianCreekSands.biome) {
                             iblockstate = Blocks.GRAVEL.getDefaultState();
                         }
+                        else if (j1 <= i + 6 && j1 >= i - 1 && Math.random() > 0.60 && biome == BiomeSilurianCreekSands.biome) {
+                            iblockstate = Blocks.GRAVEL.getDefaultState();
+                        }
+                        else if (biome == BiomeSilurianCreekSands.biome && Math.random() > 0.60) {
+                            iblockstate = Blocks.SAND.getDefaultState();
+                        }
                         else if (j1 >= i - 4 && j1 <= i + 1) {
                             iblockstate = biome.topBlock;
                             iblockstate1 = biome.fillerBlock;

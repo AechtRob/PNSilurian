@@ -4,10 +4,7 @@ package net.pnsilurian.world.biome.silurian;
 import net.lepidodendron.ElementsLepidodendronMod;
 import net.lepidodendron.util.EnumBiomeTypeSilurian;
 import net.lepidodendron.world.biome.silurian.BiomeSilurian;
-import net.lepidodendron.world.gen.WorldGenBacterialCrust;
-import net.lepidodendron.world.gen.WorldGenBaragwanathia;
-import net.lepidodendron.world.gen.WorldGenStromatoliteReefCambrian;
-import net.lepidodendron.world.gen.WorldGenThrombolite;
+import net.lepidodendron.world.gen.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -91,6 +88,7 @@ public class BiomeSilurianLagoon extends ElementsLepidodendronMod.ModElement {
 		protected static final WorldGenThrombolite THROMBOLITE_GENERATOR = new WorldGenThrombolite();
 		protected static final WorldGenBacterialCrust CRUST_GENERATOR = new WorldGenBacterialCrust();
 		protected static final WorldGenBaragwanathia BARAGWANATHIA_GENERATOR = new WorldGenBaragwanathia();
+		protected static final WorldGenSandNearWater SAND_GENERATOR = new WorldGenSandNearWater();
 
 		public WorldGenAbstractTree getRandomTreeFeature(Random rand)
 		{
@@ -122,7 +120,13 @@ public class BiomeSilurianLagoon extends ElementsLepidodendronMod.ModElement {
 					CRUST_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
 				}
 
-
+			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), DecorateBiomeEvent.Decorate.EventType.GRASS))
+				for (int i = 0; i < 64; ++i)
+				{
+					int j = rand.nextInt(16) + 8;
+					int k = rand.nextInt(16) + 8;
+					SAND_GENERATOR.generate(worldIn, rand, worldIn.getTopSolidOrLiquidBlock(new BlockPos(pos.getX() + j, 0, pos.getZ() + k)).up());
+				}
 
 			if (net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), DecorateBiomeEvent.Decorate.EventType.CLAY)) {
 				for (int i = 0; i < 10; ++i) {

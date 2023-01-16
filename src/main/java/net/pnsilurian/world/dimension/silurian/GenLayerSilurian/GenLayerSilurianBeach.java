@@ -28,12 +28,16 @@ public class GenLayerSilurianBeach extends GenLayer
 
     public Biome SILURIAN_BEACH = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_beach"));
     public int SILURIAN_BEACH_ID =  Biome.getIdForBiome(SILURIAN_BEACH);
+    public Biome SILURIAN_BEACH_SAND = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_beach_sand"));
+    public int SILURIAN_BEACH_SAND_ID =  Biome.getIdForBiome(SILURIAN_BEACH_SAND);
     public Biome SILURIAN_LAGOON_HELPER = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lagoon_helper"));
     public int SILURIAN_LAGOON_HELPER_ID =  Biome.getIdForBiome(SILURIAN_LAGOON_HELPER);
     public Biome SILURIAN_ESTUARY = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lagoon"));
     public int SILURIAN_ESTUARY_ID =  Biome.getIdForBiome(SILURIAN_ESTUARY);
     public Biome SILURIAN_LUSH = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lush_patch"));
     public int SILURIAN_LUSH_ID =  Biome.getIdForBiome(SILURIAN_LUSH);
+    public Biome SILURIAN_SAND = Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sands"));
+    public int SILURIAN_SAND_ID =  Biome.getIdForBiome(SILURIAN_SAND);
 
 
     public GenLayerSilurianBeach(long seed, GenLayer genLayer)
@@ -76,6 +80,9 @@ public class GenLayerSilurianBeach extends GenLayer
                             else if (isLush(l1) || isLush(k2) || isLush(j3) || isLush(i4)) {
                                 aint1[j + i * areaWidth] = k;
                             }
+                            else if (isSand(l1) || isSand(k2) || isSand(j3) || isSand(i4)) {
+                                aint1[j + i * areaWidth] = SILURIAN_BEACH_SAND_ID;
+                            }
                             else {
                                 aint1[j + i * areaWidth] = SILURIAN_BEACH_ID;
                             }
@@ -115,6 +122,13 @@ public class GenLayerSilurianBeach extends GenLayer
 
     private boolean isLush(int biomeID) {
         if (biomeID == SILURIAN_LUSH_ID) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isSand(int biomeID) {
+        if (biomeID == SILURIAN_SAND_ID) {
             return true;
         }
         return false;
