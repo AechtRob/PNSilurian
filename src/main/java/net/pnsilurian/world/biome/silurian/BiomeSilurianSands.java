@@ -63,6 +63,8 @@ public class BiomeSilurianSands extends ElementsLepidodendronMod.ModElement {
     	protected static final WorldGenNematophyta NEMATOPHYTA_GENERATOR = new WorldGenNematophyta();
 		protected static final WorldGenRedSandyDirt RED_GENERATOR = new WorldGenRedSandyDirt();
 		protected static final WorldGenBlackSandyDirt BLACK_GENERATOR = new WorldGenBlackSandyDirt();
+		protected static final WorldGenBacterialCrust CRUST_GENERATOR = new WorldGenBacterialCrust();
+		protected static final WorldGenMicrobialSand MICROBIAL_GENERATOR = new WorldGenMicrobialSand();
 
 		public WorldGenAbstractTree getRandomTreeFeature(Random rand)
 	    {
@@ -109,6 +111,15 @@ public class BiomeSilurianSands extends ElementsLepidodendronMod.ModElement {
 				}
 			}
 
+			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.ROCK))
+				for (int i = 0; i < 6; ++i)
+				{
+					int j = rand.nextInt(16) + 8;
+					int k = rand.nextInt(16) + 8;
+					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
+					MICROBIAL_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
+				}
+
 			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
 				for (int i = 0; i < 20; ++i)
 				{
@@ -116,6 +127,15 @@ public class BiomeSilurianSands extends ElementsLepidodendronMod.ModElement {
 					int k = rand.nextInt(16) + 8;
 					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
 					NEMATOPHYTA_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
+				}
+
+			if(net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new net.minecraft.util.math.ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS))
+				for (int i = 0; i < 6; ++i)
+				{
+					int j = rand.nextInt(16) + 8;
+					int k = rand.nextInt(16) + 8;
+					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
+					CRUST_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
 				}
 
 	        super.decorate(worldIn, rand, pos);
