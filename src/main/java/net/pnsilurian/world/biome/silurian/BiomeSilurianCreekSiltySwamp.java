@@ -36,7 +36,7 @@ public class BiomeSilurianCreekSiltySwamp extends ElementsLepidodendronMod.ModEl
 
 	static class BiomeGenCustom extends BiomeSilurian {
 		public BiomeGenCustom() {
-			super(new BiomeProperties("Silurian Silty Swamp Creek").setRainfall(0.2F).setBaseHeight(-0.525F).setHeightVariation(0.0F).setTemperature(2.25F).setWaterColor(14745518));
+			super(new BiomeProperties("Silurian Silty Swamp Creek").setRainfall(0.2F).setBaseHeight(-0.525F).setHeightVariation(0.0F).setTemperature(2.25F));
 			setRegistryName("lepidodendron:silurian_creek_silty_swamp");
 			topBlock = BlockCoarseSiltyDirt.block.getDefaultState();
 			fillerBlock = Blocks.CLAY.getDefaultState();

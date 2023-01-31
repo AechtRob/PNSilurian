@@ -36,7 +36,7 @@ public class BiomeSilurianLushPatch extends ElementsLepidodendronMod.ModElement 
 
 	static class BiomeGenCustom extends BiomeSilurian {
 		public BiomeGenCustom() {
-			super(new BiomeProperties("Silurian Lush Patch").setRainfall(0.2F).setBaseHeight(-0.1F).setHeightVariation(0.08F).setTemperature(2.25F).setWaterColor(14745518));
+			super(new BiomeProperties("Silurian Lush Patch").setRainfall(0.2F).setBaseHeight(-0.1F).setHeightVariation(0.08F).setTemperature(2.25F).setWaterColor(10195314));
 			setRegistryName("lepidodendron:silurian_lush_patch");
 			topBlock = Blocks.GRAVEL.getDefaultState();
 			fillerBlock = Blocks.GRAVEL.getDefaultState();
