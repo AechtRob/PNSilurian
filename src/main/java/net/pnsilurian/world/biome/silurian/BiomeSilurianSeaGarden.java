@@ -113,7 +113,7 @@ public class BiomeSilurianSeaGarden extends ElementsLepidodendronMod.ModElement 
 
 		@Override
 		public EnumBiomeTypeSilurian getBiomeType() {
-			return EnumBiomeTypeSilurian.Ocean;
+			return EnumBiomeTypeSilurian.Crinoid;
 		}
 	}
 
