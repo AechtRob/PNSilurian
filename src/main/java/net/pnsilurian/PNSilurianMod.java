@@ -24,11 +24,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.function.Supplier;
 
-@Mod(modid = PNSilurianMod.MODID, name = PNSilurianMod.NAME, version = PNSilurianMod.VERSION, dependencies = "required-after:lepidodendron@[54.0,)")
+@Mod(modid = PNSilurianMod.MODID, name = PNSilurianMod.NAME, version = PNSilurianMod.VERSION, dependencies = "required-after:lepidodendron@[58.0,)")
 public class PNSilurianMod {
     public static final String MODID = "pnsilurian";
     public static final String NAME = "Prehistoric Nature Silurian Dimension";
-    public static final String VERSION = "2.01";
+    public static final String VERSION = "2.02";
     public static final SimpleNetworkWrapper PACKET_HANDLER = NetworkRegistry.INSTANCE.newSimpleChannel("pnsilurian:a");
     @SidedProxy(clientSide = "net.pnsilurian.ClientProxyPNSilurianMod", serverSide = "net.pnsilurian.ServerProxyPNSilurianMod")
     public static IProxyPNSilurianMod proxy;
