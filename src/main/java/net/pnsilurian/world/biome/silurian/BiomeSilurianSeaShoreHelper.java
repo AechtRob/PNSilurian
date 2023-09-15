@@ -39,7 +39,7 @@ public class BiomeSilurianSeaShoreHelper extends ElementsLepidodendronMod.ModEle
 
 	static class BiomeGenCustom extends BiomeSilurian {
 		public BiomeGenCustom() {
-			super(new BiomeProperties("Silurian Shallow Ocean HELPER").setRainfall(0.5F).setBaseHeight(-0.65F).setHeightVariation(0.01F).setTemperature(2.25F));
+			super(new BiomeProperties("Silurian Shallow Ocean").setRainfall(0.5F).setBaseHeight(-0.65F).setHeightVariation(0.01F).setTemperature(2.25F));
 			setRegistryName("lepidodendron:silurian_sea_shore_helper");
 			topBlock = Blocks.GRAVEL.getDefaultState();
 			fillerBlock = Blocks.GRAVEL.getDefaultState();
