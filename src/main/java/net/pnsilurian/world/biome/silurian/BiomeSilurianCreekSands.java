@@ -3,13 +3,15 @@ package net.pnsilurian.world.biome.silurian;
 
 import net.lepidodendron.ElementsLepidodendronMod;
 import net.lepidodendron.block.BlockCoarseSandyDirt;
+import net.lepidodendron.block.BlockNematophyta;
 import net.lepidodendron.block.BlockStoneScoria;
 import net.lepidodendron.util.EnumBiomeTypeSilurian;
 import net.lepidodendron.world.biome.silurian.BiomeSilurian;
 import net.lepidodendron.world.gen.WorldGenBlackSandyDirt;
-import net.lepidodendron.world.gen.WorldGenNematophyta;
 import net.lepidodendron.world.gen.WorldGenRedSandyDirt;
 import net.lepidodendron.world.gen.WorldGenRockPiles;
+import net.lepidodendron.world.gen.WorldGenSinglePlantOptionalWater;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -61,7 +63,8 @@ public class BiomeSilurianCreekSands extends ElementsLepidodendronMod.ModElement
 		}
 
 		protected static final WorldGenRockPiles ROCK_PILES_GENERATOR = new WorldGenRockPiles();
-    	protected static final WorldGenNematophyta NEMATOPHYTA_GENERATOR = new WorldGenNematophyta();
+		//protected static final WorldGenNematophyta NEMATOPHYTA_GENERATOR = new WorldGenNematophyta();
+		protected static final WorldGenSinglePlantOptionalWater PLANT_GENERATOR = new WorldGenSinglePlantOptionalWater();
 		protected static final WorldGenRedSandyDirt RED_GENERATOR = new WorldGenRedSandyDirt();
 		protected static final WorldGenBlackSandyDirt BLACK_GENERATOR = new WorldGenBlackSandyDirt();
 
@@ -116,7 +119,7 @@ public class BiomeSilurianCreekSands extends ElementsLepidodendronMod.ModElement
 					int j = rand.nextInt(16) + 8;
 					int k = rand.nextInt(16) + 8;
 					int l = rand.nextInt(worldIn.getHeight(pos.add(j, 0, k)).getY() + 32);
-					NEMATOPHYTA_GENERATOR.generate(worldIn, rand, pos.add(j, l, k));
+					PLANT_GENERATOR.generate(BlockNematophyta.block.getDefaultState().withProperty(BlockNematophyta.BlockCustom.FACING, EnumFacing.UP), worldIn, rand, pos.add(j, l, k));
 				}
 
 	        super.decorate(worldIn, rand, pos);
