@@ -22,30 +22,31 @@ import java.util.Random;
 
 public class BiomeProviderSilurian extends BiomeProvider {
     public static List<Biome> allowedBiomes = Lists.newArrayList(
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lagoon")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_hills")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_silty_swamp")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_beach")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_beach_sand")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_crags")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek_coastal")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek_silty_swamp")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_cooksonia")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_coral")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_crags")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek_coastal")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek_cooksonia")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek_sands")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek_silty_swamp")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_hills")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lagoon")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lagoon_helper")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_land")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lush_patch")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_reef")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sands")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore_helper")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_garden")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_land")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sands")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek_sands")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea")),
             Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_sandy")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_sea_shore_helper")),
-            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_silty_swamp"))
-    );
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lagoon_helper")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_lush_patch")),
+            Biome.REGISTRY.getObject(new ResourceLocation("lepidodendron:silurian_creek"))
+
+            );
     public GenLayer genBiomes;
     /** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
     public GenLayer biomeIndexLayer;
