@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 public class PNSilurianMod {
     public static final String MODID = "pnsilurian";
     public static final String NAME = "Prehistoric Nature Silurian Dimension";
-    public static final String VERSION = "2.04";
+    public static final String VERSION = "2.05";
     public static final SimpleNetworkWrapper PACKET_HANDLER = NetworkRegistry.INSTANCE.newSimpleChannel("pnsilurian:a");
     @SidedProxy(clientSide = "net.pnsilurian.ClientProxyPNSilurianMod", serverSide = "net.pnsilurian.ServerProxyPNSilurianMod")
     public static IProxyPNSilurianMod proxy;
