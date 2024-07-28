@@ -136,26 +136,27 @@ public class ChunkProviderSilurian implements IChunkGenerator {
         this.random.setSeed((long) x * k + (long) z * l ^ this.world.getSeed());
         net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.random, x, z, false);
 
-        if (((BiomeSilurian) biome).getBiomeType() == EnumBiomeTypeSilurian.Cooksonia) {
-            for (int lake = 0; lake < 4; ++lake) {
-                if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.random, x, z, false,
-                        net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
-                    int i1 = this.random.nextInt(16) + 8;
-                    int j1 = this.random.nextInt(256);
-                    int k1 = this.random.nextInt(16) + 8;
-                    (new WorldGenOrdovicianBogLakes(Blocks.WATER)).generate(this.world, this.random, blockpos.add(i1, j1, k1));
+        if (biome instanceof BiomeSilurian) {
+            if (((BiomeSilurian) biome).getBiomeType() == EnumBiomeTypeSilurian.Cooksonia) {
+                for (int lake = 0; lake < 4; ++lake) {
+                    if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.random, x, z, false,
+                            net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
+                        int i1 = this.random.nextInt(16) + 8;
+                        int j1 = this.random.nextInt(256);
+                        int k1 = this.random.nextInt(16) + 8;
+                        (new WorldGenOrdovicianBogLakes(Blocks.WATER)).generate(this.world, this.random, blockpos.add(i1, j1, k1));
+                    }
                 }
+            } else {
+                if (this.random.nextInt(4) == 0)
+                    if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.random, x, z, false,
+                            net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
+                        int i1 = this.random.nextInt(16) + 8;
+                        int j1 = this.random.nextInt(256);
+                        int k1 = this.random.nextInt(16) + 8;
+                        (new WorldGenPrehistoricLakes(FLUID.getBlock())).generate(this.world, this.random, blockpos.add(i1, j1, k1));
+                    }
             }
-        }
-        else {
-            if (this.random.nextInt(4) == 0)
-                if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.random, x, z, false,
-                        net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
-                    int i1 = this.random.nextInt(16) + 8;
-                    int j1 = this.random.nextInt(256);
-                    int k1 = this.random.nextInt(16) + 8;
-                    (new WorldGenPrehistoricLakes(FLUID.getBlock())).generate(this.world, this.random, blockpos.add(i1, j1, k1));
-                }
         }
 
         net.minecraftforge.common.MinecraftForge.EVENT_BUS
