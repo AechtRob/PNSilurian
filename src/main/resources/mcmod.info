@@ -3,16 +3,16 @@
     "modid": "pnsilurian",
     "name": "Prehistoric Nature Silurian",
     "description": "Adds the Prehistoric Nature Silurian dimension",
-    "version": "2.05",
+    "version": "3.0",
     "mcversion": "1.12.2",
     "url": "",
     "updateUrl": "",
     "authorList": ["Aecht_Rob"],
     "credits": "Prehistoric Nature",
-    "dependencies": ["lepidodendron@[60.0,)","jeid@[2.0.6,)"],
+    "dependencies": ["lepidodendron@[62.0,)","jeid@[2.0.6,)"],
     "logoFile": "",
     "screenshots": [],
-    "requiredMods": ["lepidodendron@[60.0,)","jeid@[2.0.6,)"],
+    "requiredMods": ["lepidodendron@[62.0,)","jeid@[2.0.6,)"],
     "useDependencyInformation": "true"
   }
 ]

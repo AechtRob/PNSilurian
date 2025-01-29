@@ -4,7 +4,9 @@ package net.pnsilurian.world.dimension.silurian;
 import com.google.common.cache.LoadingCache;
 import net.lepidodendron.ElementsLepidodendronMod;
 import net.lepidodendron.LepidodendronConfig;
-import net.lepidodendron.block.BlockPrototaxitesBlock;
+import net.lepidodendron.block.BlockPortalBlock;
+import net.lepidodendron.block.BlockPortalBlockSilurian;
+import net.lepidodendron.util.BlockSounds;
 import net.lepidodendron.util.Functions;
 import net.lepidodendron.util.ModTriggers;
 import net.lepidodendron.util.ParticlePNPortal;
@@ -29,10 +31,7 @@ import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -323,8 +322,11 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                             boolean flag = k8 < 0;
                             this.world.setBlockState(new BlockPos(k9, k10+1, k11),
                                     flag
-                                            ? BlockPrototaxitesBlock.block.getDefaultState().getBlock().getDefaultState()
+                                            ? BlockPortalBlockSilurian.block.getDefaultState().getBlock().getDefaultState()
                                             : Blocks.AIR.getDefaultState());
+                            if (flag) {
+                                BlockPortalBlock.setPortalAsActive(world, new BlockPos(k9, k10+1, k11), true, 90);
+                            }
                         }
                     }
                 }
@@ -338,7 +340,13 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                         int k12 = k6 + (l8 - 1) * i3;
                         boolean flag1 = l8 == 0 || l8 == 3 || l9 == -1 || l9 == 3;
                         this.world.setBlockState(new BlockPos(l10, l11+1, k12),
-                                flag1 ? BlockPrototaxitesBlock.block.getDefaultState().getBlock().getDefaultState() : iblockstate, 2);
+                                flag1 ? BlockPortalBlockSilurian.block.getDefaultState().getBlock().getDefaultState() : iblockstate, 2);
+                        if (flag1) {
+                            BlockPortalBlock.setPortalAsActive(world, new BlockPos(l10, l11+1, k12), true, 90);
+                        }
+                        else { //trigger the portal animation:
+                            BlockPortalBlock.setPortalAnimation(world, new BlockPos(l10, l11+1, k12), l6 == 0 ? false : true);
+                        }
                     }
                 }
                 for (int i9 = 0; i9 < 4; ++i9) {
@@ -593,6 +601,10 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                                     flag
                                             ? portalBlockstate
                                             : Blocks.AIR.getDefaultState());
+
+                            if (flag) {
+                                BlockPortalBlock.setPortalAsActive(world, new BlockPos(k9, k10+1, k11), true, 90);
+                            }
                         }
                     }
                 }
@@ -607,6 +619,12 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                         boolean flag1 = l8 == 0 || l8 == 3 || l9 == -1 || l9 == 3;
                         this.world.setBlockState(new BlockPos(l10, l11+1, k12),
                                 flag1 ? portalBlockstate : iblockstate, 2);
+                        if (flag1) {
+                            BlockPortalBlock.setPortalAsActive(world, new BlockPos(l10, l11+1, k12), true, 90);
+                        }
+                        else { //trigger the portal animation:
+                            BlockPortalBlock.setPortalAnimation(world, new BlockPos(l10, l11+1, k12), l6 == 0 ? false : true);
+                        }
                     }
                 }
                 for (int i9 = 0; i9 < 4; ++i9) {
@@ -644,8 +662,11 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                             boolean flag = l1 < 0;
                             this.world.setBlockState(new BlockPos(i2, j2, k2),
                                     flag
-                                            ? BlockPrototaxitesBlock.block.getDefaultState().getBlock().getDefaultState()
+                                            ? BlockPortalBlockSilurian.block.getDefaultState().getBlock().getDefaultState()
                                             : Blocks.AIR.getDefaultState());
+                            if (flag) {
+                                BlockPortalBlock.setPortalAsActive(world, new BlockPos(i2, j2, k2), true, 90);
+                            }
                         }
                     }
                 }
@@ -837,11 +858,13 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                 BlockCustomPortal.Size blockportal$size = new BlockCustomPortal.Size(worldIn, pos, EnumFacing.Axis.X);
                 if (!blockportal$size.isValid() || blockportal$size.portalBlockCount < blockportal$size.width * blockportal$size.height) {
                     worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+                    BlockPortalBlock.unsetPortalAnimation(worldIn, pos, true);
                 }
             } else if (enumfacing$axis == EnumFacing.Axis.Z) {
                 BlockCustomPortal.Size blockportal$size1 = new BlockCustomPortal.Size(worldIn, pos, EnumFacing.Axis.Z);
                 if (!blockportal$size1.isValid() || blockportal$size1.portalBlockCount < blockportal$size1.width * blockportal$size1.height) {
                     worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+                    BlockPortalBlock.unsetPortalAnimation(worldIn, pos, false);
                 }
             }
         }
@@ -850,12 +873,19 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
         @Override
         public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 
-            if (random.nextInt(110) == 0)
+            if (random.nextInt(80) == 0) {
+                SoundEvent soundEvent = Functions.getDimensionLivingSound(4, world);
+                if (soundEvent != null) {
+                    world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                            soundEvent,
+                            SoundCategory.BLOCKS, 1.0f, 1.0F, false);
+                }
+            }
+            if (random.nextInt(160) == 0) {
                 world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                        (net.minecraft.util.SoundEvent) net.minecraft.util.SoundEvent.REGISTRY
-                                .getObject(new ResourceLocation(("block.portal.ambient"))),
+                        BlockSounds.PORTAL_AMBIENT,
                         SoundCategory.BLOCKS, 0.5f, random.nextFloat() * 0.4F + 0.8F, false);
-
+            }
 
             for (int i = 0; i < 4; ++i)
             {
@@ -1095,12 +1125,12 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                 for (i = 0; i < 22; ++i) {
                     BlockPos blockpos = p_180120_1_.offset(p_180120_2_, i);
                     if (!this.isEmptyBlock(this.world.getBlockState(blockpos).getBlock())
-                            || this.world.getBlockState(blockpos.down()).getBlock() != BlockPrototaxitesBlock.block.getDefaultState().getBlock()) {
+                            || this.world.getBlockState(blockpos.down()).getBlock() != BlockPortalBlockSilurian.block.getDefaultState().getBlock()) {
                         break;
                     }
                 }
                 Block block = this.world.getBlockState(p_180120_1_.offset(p_180120_2_, i)).getBlock();
-                return block == BlockPrototaxitesBlock.block.getDefaultState().getBlock() ? i : 0;
+                return block == BlockPortalBlockSilurian.block.getDefaultState().getBlock() ? i : 0;
             }
 
             public int getHeight() {
@@ -1124,12 +1154,12 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                         }
                         if (i == 0) {
                             block = this.world.getBlockState(blockpos.offset(this.leftDir)).getBlock();
-                            if (block != BlockPrototaxitesBlock.block.getDefaultState().getBlock()) {
+                            if (block != BlockPortalBlockSilurian.block.getDefaultState().getBlock()) {
                                 break label56;
                             }
                         } else if (i == this.width - 1) {
                             block = this.world.getBlockState(blockpos.offset(this.rightDir)).getBlock();
-                            if (block != BlockPrototaxitesBlock.block.getDefaultState().getBlock()) {
+                            if (block != BlockPortalBlockSilurian.block.getDefaultState().getBlock()) {
                                 break label56;
                             }
                         }
@@ -1137,7 +1167,7 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                 }
                 for (int j = 0; j < this.width; ++j) {
                     if (this.world.getBlockState(this.bottomLeft.offset(this.rightDir, j).up(this.height))
-                            .getBlock() != BlockPrototaxitesBlock.block.getDefaultState().getBlock()) {
+                            .getBlock() != BlockPortalBlockSilurian.block.getDefaultState().getBlock()) {
                         this.height = 0;
                         break;
                     }
@@ -1165,6 +1195,7 @@ public class WorldSilurian extends ElementsLepidodendronMod.ModElement {
                     BlockPos blockpos = this.bottomLeft.offset(this.rightDir, i);
                     for (int j = 0; j < this.height; ++j) {
                         this.world.setBlockState(blockpos.up(j), portal.getDefaultState().withProperty(BlockPortal.AXIS, this.axis), 2);
+                        BlockPortalBlock.setPortalAnimation(world, blockpos.up(j), this.axis == EnumFacing.Axis.Z ? false : true);
                     }
                 }
             }
